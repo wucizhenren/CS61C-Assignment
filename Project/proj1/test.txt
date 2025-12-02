@@ -1,0 +1,2 @@
+testInputs/JohnConway.ppm > studentOutputs/JohnConway.ppm  > testInputs/JohnConway.ppm > studentOutputs/JohnConway.ppm
+(image->image[0])[0].R
