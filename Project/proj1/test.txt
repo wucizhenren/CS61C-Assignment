@@ -1,2 +1,13 @@
 testInputs/JohnConway.ppm > studentOutputs/JohnConway.ppm  > testInputs/JohnConway.ppm > studentOutputs/JohnConway.ppm
 (image->image[0])[0].R
+./gameOfLife testInputs/GliderGuns.ppm   0x1808 > studentOutputs/GliderGuns.ppm
+./gameOfLife testInputs/JohnConway.ppm   0x1808 > studentOutputs/GliderGuns.ppm
+./gameOfLife testInputs/blinkerH.ppm   0x1808 > studentOutputs/GliderGuns.ppm
+testInputs/GliderGuns.ppm
+
+testInputs/.ppm
+oracleOfLife testInputs/GliderGuns.ppm 0x1808
+./frames.csh blinkerH  0x1808 100
+image->image[((row + i) + image->rows) % image->rows][((col + j) + image->cols) % image->cols].R 
+./frames.csh GliderGuns 0x2024 100
+convert -delay 20 -loop 0 -scale 400% studentOutputs/GliderGuns/*.ppm GliderGuns.gif

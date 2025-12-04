@@ -22,11 +22,37 @@
 // not affect Image, and should allocate space for a new Color.
 Color *evaluateOnePixel(Image *image, int row, int col) {
   // YOUR CODE HERE
+  Color *newCol = (Color *)malloc(sizeof(Color));
+  if (image->image[row][col].B & 0x1) {
+    newCol->R = 255;
+    newCol->G = 255;
+    newCol->B = 255;
+  } else {
+    newCol->R = 0;
+    newCol->G = 0;
+    newCol->B = 0;
+  }
+  return newCol;
 }
 
 // Given an image, creates a new image extracting the LSB of the B channel.
 Image *steganography(Image *image) {
   // YOUR CODE HERE
+  Image *res = (Image *)malloc(sizeof(Image));
+  res->cols = image->cols;
+  res->rows = image->rows;
+  res->image = (Color **)malloc(sizeof(Color *) * res->rows);
+  for (int i = 0; i < res->cols; i++) {
+    res->image[i] = (Color *)malloc(sizeof(Color) * res->cols);
+  }
+  for (int i = 0; i < res->rows; i++) {
+    for (int j = 0; j < res->cols; j++) {
+      Color *tmp = evaluateOnePixel(image, i, j);
+      res->image[i][j] = *tmp;
+      free(tmp);
+    }
+  }
+  return res;
 }
 
 /*
@@ -43,6 +69,24 @@ fails, or any other error occurs, you should exit with code -1. Otherwise, you
 should return from main with code 0. Make sure to free all memory before
 returning!
 */
+// 看上面，原来如此，我说之前我用gdb看的时候，怎么只输入了两个参数，argc就等于3了，原来还有一个默认的程序名称
+
+void processCLI(int argc, char **argv, char **filename) {
+  if (argc != 2) {
+    exit(-1);
+  }
+  *filename = argv[1];
+}
+
 int main(int argc, char **argv) {
   // YOUR CODE HERE
+  Image *image;
+  char *filename;
+  processCLI(argc, argv, &filename);
+  image = readData(filename);
+  Image *LSB = steganography(image);
+  writeData(LSB);
+  freeImage(image);
+  freeImage(LSB);
+  return 0;
 }
