@@ -17,6 +17,7 @@ main:
 
     # load the address of the function in question into a1 (check out la on the green sheet)
     ### YOUR CODE HERE ###
+    add a1,a1,x0
 
     # issue the call to map
     jal ra, map
@@ -46,26 +47,32 @@ map:
     # load the value of the current node into a0
     # THINK: why a0?
     ### YOUR CODE HERE ###
+    lw a0,0(s0)
 
     # Call the function in question on that value. DO NOT use a label (be prepared to answer why).
     # What function? Recall the parameters of "map"
     ### YOUR CODE HERE ###
+    jalr s1
 
     # store the returned value back into the node
     # Where can you assume the returned value is?
     ### YOUR CODE HERE ###
+    sw a0,0(s0)
 
     # Load the address of the next node into a0
     # The Address of the next node is an attribute of the current node.
     # Think about how structs are organized in memory.
     ### YOUR CODE HERE ###
+    lw a0,4(s0)
 
     # Put the address of the function back into a1 to prepare for the recursion
     # THINK: why a1? What about a0?
     ### YOUR CODE HERE ###
+    mv a1,s1
 
     # recurse
     ### YOUR CODE HERE ###
+    jal x0,map
 
 done:
     # Epilogue: Restore register values and free space from the stack
