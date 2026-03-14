@@ -26,7 +26,13 @@
 matmul:
 
     # Error checks
-    
+    li t0,1
+    blt a1,t0,fuck1
+    blt a2,t0,fuck1
+    blt a4,t0,fuck2
+    blt a5,t0,fuck2
+    bne a2,a4,fuck3
+
 
     # Prologue
     #s0 outer index
@@ -77,7 +83,7 @@ inner_loop_start:
     lw a6,24(sp)
     addi sp,sp,28
  #t0 as the pointer to c[i][j]
-    mul t0,a1,s0
+    mul t0,a5,s0
     add t0,t0,s1
     slli t0,t0,2
     add t0,t0,a6
@@ -98,3 +104,15 @@ done:
     lw ra,8(sp)
     addi sp,sp,12
     ret
+
+fuck1:
+    li a1,72
+    jal exit2
+
+fuck2:
+    li a1,73
+    jal exit2
+
+fuck3:
+    li a1,74
+    jal exit2

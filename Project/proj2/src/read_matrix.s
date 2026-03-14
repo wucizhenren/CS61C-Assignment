@@ -24,19 +24,68 @@
 # - If you receive an fclose error or eof,
 #   this function terminates the program with error code 92.
 # ==============================================================================
+# fopen
+#row = fread
+#col = fread
+# int a[][]=new malloc();
+#         a[][]=file();
+# fclose
 read_matrix:
 
     # Prologue
-	
-
-
-
-
-
-
-
-
+    addi sp,sp,-24
+    sw s0,0(sp)
+    sw s1,4(sp)
+    sw s2,8(sp)
+    sw s3,12(sp)
+    sw s4,16(sp)
+    sw ra,20(sp)
+	#s0,s1,s2 save the arguments
+    #s3 save the return pointer
+    mv s0,a0
+    mv s1,a1
+    mv s2,a2
+    #fopen
+    mv a1,s0
+    li a2,0
+    jal fopen
+    #s4 save file descirptor
+    mv s4,a0
+    #fread
+    mv a1,s4
+    mv a2,s1
+    li a3,4
+    jal fread
+    #fread
+    mv a1,s4
+    mv a2,s2
+    li a3,4
+    jal fread
+    
+    #malloc
+    lw t0,0(s0)
+    lw t1,0(s1)
+    mul a0,t0,t1
+    slli a0,a0,2
+    jal malloc
+    mv s3,a0
+    # fread
+    mv a1,s4
+    mv a2,s3
+    lw t0,0(s0)
+    lw t1,0(s1)
+    mul a3,t0,t1
+    slli a3,a0,2
+    jal fread
     # Epilogue
-
-
+    #fclose
+    mv a1,s4
+    jal fclose
+    lw s0,0(sp)
+    lw s1,4(sp)
+    lw s2,8(sp)
+    lw s3,12(sp)
+    lw s4,16(sp)
+    lw ra,20(sp)
+    addi sp,sp,24
     ret

@@ -1,0 +1,7 @@
+#test
+    addi sp,sp,-4
+    sw a1,0(sp)
+    mv a1,a0
+    jal print_int
+    lw a1,0(sp)
+    addi sp,sp,4
