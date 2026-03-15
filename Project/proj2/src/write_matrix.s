@@ -32,11 +32,16 @@ write_matrix:
     sw s3,12(sp)
     sw s4,16(sp)
     sw ra,20(sp)
+
+
+
     #s0--s3 save argument
     mv s0,a0
     mv s1,a1
     mv s2,a2
     mv s3,a3
+
+
     # fopen
     mv a1,s0
     li a2,1
@@ -45,10 +50,14 @@ write_matrix:
     beq a0,t0,error1
     #s4 save file descriptor
     mv s4,a0
+
+
     #malloc
     li a0,4
     jal malloc
     sw s2,0(a0)
+
+
     #fwrite row
     mv a1,s4
     mv a2,a0
@@ -60,6 +69,8 @@ write_matrix:
     lw a3,0(sp)
     addi sp,sp,4
     bne a0,a3,error2
+
+
     #malloc
     li a0,4
     jal malloc
@@ -76,6 +87,7 @@ write_matrix:
     addi sp,sp,4
     bne a0,a3,error2
    
+
     #fwrite matrix
     mv a1,s4
     mv a2,s1
@@ -89,6 +101,8 @@ write_matrix:
     lw a3,0(sp)
     addi sp,sp,4
     bne a0,a3,error2
+
+    
     #fclose
     mv a1,s4
     jal fclose

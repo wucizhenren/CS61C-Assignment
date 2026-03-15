@@ -60,17 +60,18 @@ inner_loop_start:
     sw a6,24(sp)
     #t0 to v0
     #t1 to v1
-    mul t0,a1,s0
+    mul t0,a2,s0
     slli t0,t0,2
     add t0,t0,a0
     add t1,x0,s1
     slli t1,t1,2
     add t1,t1,a3
    
-    mv a2,a5
+    mv a2,a4
     addi a3,x0,1
     mv a0,t0
     mv a1,t1
+    mv a4,a5
     jal dot
     #t1 save return value
     mv t1,a0

@@ -79,13 +79,11 @@ load:
     jal read_matrix
     sw a0,0(s3)
 
-
-
     # Load input matrix
     # malloc for input,save one pointer
     li a0,12
     jal malloc
-    # s4 save m1
+    # s4 save input
     mv s4,a0
     #load
     lw t0,12(s0)
@@ -94,7 +92,6 @@ load:
     addi a2,s4,8
     jal read_matrix  
     sw a0,0(s4)
-
 
 
  
@@ -131,6 +128,8 @@ load:
     lw t1,8(s4)
     mul a1,t0,t1
     jal relu
+
+
     #step 3
     #malloc as destination,s6 save
     lw t0,4(s3)
@@ -139,16 +138,14 @@ load:
     slli a0,a0,2
     jal malloc
     mv s6,a0
-    
     lw a0,0(s3)
     lw a1,4(s3)
     lw a2,8(s3)
     mv a3,s5
-    lw a4,4(s3)
+    lw a4,4(s2)
     lw a5,8(s4)
     mv a6,s6
     jal matmul
-
 
 
     # =====================================
@@ -160,7 +157,6 @@ load:
     lw a2,4(s3)
     lw a3,8(s4)
     jal write_matrix
-
     # =====================================
     # CALCULATE CLASSIFICATION/LABEL
     # =====================================
@@ -170,7 +166,6 @@ load:
     lw t1,8(s4)
     mul a1,t0,t1
     jal argmax
-
     
     #remember a2
     # Print classification

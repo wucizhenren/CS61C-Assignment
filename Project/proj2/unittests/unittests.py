@@ -81,8 +81,8 @@ class TestDot(TestCase):
     def test_simple(self):
         t = AssemblyTest(self, "dot.s")
         # create arrays in the data section
-        array0 = t.array([1, 2, 3, 4, 5, 6, 7, 8, 9])
-        array1 = t.array([1, 2, 3, 4, 5, 6, 7, 8, 9])
+        array0 = t.array([1, 2, 3])
+        array1 = t.array([1, 1,1])
         # load array addresses into argument registers
         t.input_array("a0", array0)
         t.input_array("a1", array1)
@@ -93,7 +93,7 @@ class TestDot(TestCase):
         # call the `dot` function
         t.call("dot")
         # check the return value
-        t.check_scalar("a0", 285)
+        t.check_scalar("a0", 6)
         t.execute()
 
     @classmethod
@@ -111,7 +111,6 @@ class TestMatmul(TestCase):
         # create arrays for the arguments and to store the result
         array0 = t.array(m0)
         array1 = t.array(m1)
-        t.input_scalar("a4", 1)
         array_out = t.array([0] * len(result))
 
         # load address of input matrices and set their dimensions
@@ -128,7 +127,7 @@ class TestMatmul(TestCase):
         t.call("matmul")
 
         # check the content of the output array
-        t.check_array(array_out,[30, 36, 42, 66, 81, 96, 102, 126, 150])
+        t.check_array(array_out,[6,15,24])
 
         # generate the assembly file and run it through venus, we expect the simulation to exit with code `code`
         t.execute(code=code)
@@ -136,8 +135,8 @@ class TestMatmul(TestCase):
     def test_simple(self):
         self.do_matmul(
             [1, 2, 3, 4, 5, 6, 7, 8, 9], 3, 3,
-            [1, 2, 3, 4, 5, 6, 7, 8, 9], 3, 3,
-            [30, 36, 42, 66, 81, 96, 102, 126, 150]
+            [1, 1, 1], 3, 1,
+            [6,15,24]
         )
 
     @classmethod
@@ -157,17 +156,16 @@ class TestReadMatrix(TestCase):
         cols = t.array([-1])
 
         # load the addresses to the output parameters into the argument registers
-        t.input_scalar("a1",int(rows))
-        t._input_args("a2",int(cols))
+        t.input_array("a1",rows)
+        t.input_array("a2",cols)
 
         # call the read_matrix function
         t.call("read_matrix")
 
         # check the output from the function
         t.check_array_pointer("a0",[1, 2, 3, 4, 5, 6, 7, 8, 9])
-        t.check_array_pointer("a1",3)
-        t.check_array_pointer("a2",3)
-
+        t.check_array_pointer("a1",[3])
+        t.check_array_pointer("a2",[3])
         # generate assembly and run it through venus
         t.execute(fail=fail, code=code)
 

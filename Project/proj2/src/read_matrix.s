@@ -49,6 +49,8 @@ read_matrix:
     mv a1,s0
     li a2,0
     jal fopen
+    li t0,-1
+    beq a0,t0,bug2
     #s4 save file descirptor
     mv s4,a0
     #fread
@@ -56,15 +58,19 @@ read_matrix:
     mv a2,s1
     li a3,4
     jal fread
+    li t0,4
+    bne a0,t0,bug3
     #fread
     mv a1,s4
     mv a2,s2
     li a3,4
     jal fread
+    li t0,4
+    bne a0,t0,bug3
     
     #malloc
-    lw t0,0(s0)
-    lw t1,0(s1)
+    lw t0,0(s1)
+    lw t1,0(s2)
     mul a0,t0,t1
     slli a0,a0,2
     jal malloc
@@ -72,15 +78,23 @@ read_matrix:
     # fread
     mv a1,s4
     mv a2,s3
-    lw t0,0(s0)
-    lw t1,0(s1)
+    lw t0,0(s1)
+    lw t1,0(s2)
     mul a3,t0,t1
-    slli a3,a0,2
+    slli a3,a3,2
+    addi sp,sp,-4
+    sw a3,0(sp)
     jal fread
+    lw a3,0(sp)
+    addi sp,sp,4
+    bne a3,a0,bug3
     # Epilogue
     #fclose
     mv a1,s4
     jal fclose
+    mv a0,s3
+    mv a1,s1
+    mv a2,s2
     lw s0,0(sp)
     lw s1,4(sp)
     lw s2,8(sp)
@@ -89,3 +103,20 @@ read_matrix:
     lw ra,20(sp)
     addi sp,sp,24
     ret
+
+bug1:
+    li a1,88
+    jal exit2
+bug2:
+    li a1,90
+    jal exit2
+bug3:
+    li a1,91
+    jal exit2
+bug4:
+    li a1,92
+    jal exit2
+
+fuck:
+    li a1,46
+    jal exit2

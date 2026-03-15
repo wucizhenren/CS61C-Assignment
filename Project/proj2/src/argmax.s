@@ -41,6 +41,8 @@ loop_end:
     addi t3,t3,4
     jal x0,loop_start
 
+
     # Epilogue
 done:
+    mv a0,t4
     ret
