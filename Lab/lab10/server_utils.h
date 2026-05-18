@@ -1,5 +1,6 @@
 #ifndef THREAD_LAB_SERVER_UTILS_H
 #define THREAD_LAB_SERVER_UTILS_H
+#define PROC
 
 #include <arpa/inet.h>
 #include <dirent.h>
