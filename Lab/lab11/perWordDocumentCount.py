@@ -19,7 +19,9 @@ def flatMapFunc(document):
     """
     documentID = document[0]
     words = re.findall(r"\w+", document[1])
-    return words
+    uniqueWords = set(words)   
+    """set自动去重"""
+    return uniqueWords
 
 def mapFunc(arg):
     """

@@ -259,7 +259,7 @@ void serve_forever(int *socket_number) {
     /* YOUR CODE HERE */
     pid_t child_pid;
     child_pid = fork();
-    if (getpid() == child_pid) {
+    if (child_pid == 0) {
 
       // This line kills the child process if parent dies
       int r = prctl(PR_SET_PDEATHSIG, SIGTERM);

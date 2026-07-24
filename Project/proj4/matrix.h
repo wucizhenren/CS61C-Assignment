@@ -4,10 +4,11 @@ typedef struct matrix {
     int rows;      	// number of rows
     int cols;      	// number of columns
     double **data; 	// each element is a pointer to a row of data
-    int is_1d;     	// Whether this matrix is a 1d matrix
+    int is_1d;     	// Whether this matrix is a 1d matrix,就是col或者row有一个为1这个就是1.
     // For 1D matrix, shape is (rows * cols)
     int ref_cnt;
-    struct matrix *parent;
+    //当前与这个 matrix 结构体共享全部或部分数据数组（data array）的 matrix 结构体数量（包括它自己）。
+    struct matrix *parent;//如果是一个矩阵的切割就指向那个矩阵，反之则为null
 } matrix;
 
 

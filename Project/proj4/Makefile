@@ -1,8 +1,8 @@
 CC = gcc
 CFLAGS = -g -Wall -std=c99 -fopenmp -mavx -mfma -pthread
-LDFLAGS = -fopenmp
+LDFLAGS = -fopenmp -Wl,-rpath,$(CONDA_PREFIX)/lib
 CUNIT = -L/home/ff/cs61c/cunit/install/lib -I/home/ff/cs61c/cunit/install/include -lcunit
-PYTHON = -I/usr/include/python3.6 -lpython3.6m
+PYTHON = -I/root/miniconda3/envs/py36/include/python3.6m/ -L/root/miniconda3/envs/py36/lib -lpython3.6m
 
 install:
 	if [ ! -f files.txt ]; then touch files.txt; fi

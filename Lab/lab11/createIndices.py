@@ -12,7 +12,22 @@ def flatMapFunc(document):
     """
     documentID = document[0]
     words = re.findall(r"\w+", document[1])
-    return words
+    # 第一步：生成 (word, index)
+    tuples = [(word, i + 1) for i, word in enumerate(words)]
+
+    # 第二步：分组
+    resultDict = {}
+
+    for word, index in tuples:
+      if word not in resultDict:
+         resultDict[word] = [index]
+      else:
+          resultDict[word].append(index)
+
+    # 第三步：转成 tuple
+    result = [(word, documentID,*indexes) for word, indexes in resultDict.items()]
+
+    return result
 
 def mapFunc(arg):
     """
@@ -30,9 +45,7 @@ def createIndices(file_name, output="spark-wc-out-createIndices"):
     sc = SparkContext("local[8]", "CreateIndices", conf=SparkConf().set("spark.hadoop.validateOutputSpecs", "false"))
     file = sc.sequenceFile(file_name)
 
-    indices = file.flatMap(flatMapFunc) \
-                 .map(mapFunc) \
-                 .reduceByKey(reduceFunc)
+    indices = file.flatMap(flatMapFunc)
 
     indices.coalesce(1).saveAsTextFile(output)
 
